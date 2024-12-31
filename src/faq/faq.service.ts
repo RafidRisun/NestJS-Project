@@ -11,28 +11,22 @@ export class FaqService {
   constructor(
     @InjectRepository(Faq) private readonly faqRepo: Repository<Faq>,
     @InjectRepository(User) private readonly userRepo: Repository<User>,
-  ){}
+  ) { }
 
-  async create(createFaqDto: CreateFaqDto, userId: number): Promise<Faq>{
-    const user = await this.userRepo.findOne({ where: {id: userId},select: ["id", "name"]});
+  async create(createFaqDto: CreateFaqDto, userId: number): Promise<Faq> {
+    const user = await this.userRepo.findOne({ where: { id: userId } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const faq = this.faqRepo.create({ ...createFaqDto, user});
+    createFaqDto.userId = userId;
+    const faq = this.faqRepo.create({ ...createFaqDto });
     return await this.faqRepo.save(faq);
   }
 
+  async findAllFAQS(): Promise<Faq[]> {
+    return this.faqRepo.find();
+  }
 
-  // async create(createPostDto: CreatePostDto, userId: number): Promise<Post> {
-  //   const user = await this.userRepo.findOne({ where: { id: userId}});
-  //   if (!user) {
-  //     throw new NotFoundException('User not found');
-  //   }
-
-  //   const post = this.postRepo.create({ ...createPostDto, user }); // Associate user with the post
-  //   return await this.postRepo.save(post);
-  // }
-  
   allfaq() {
     // General Q&A pairs
     const faq = [

@@ -1,5 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { Post } from './post.entity';
+import { Posts } from './post.entity';
+import { Forum } from './forum.entity';
+import { User } from './user.entity';
 
 @Entity('comments')
 export class Comment {
@@ -9,6 +11,21 @@ export class Comment {
   @Column()
   content: string;
 
-  @ManyToOne(() => Post, post => post.comments)
-  post: Post;
+  @ManyToOne(() => User, user => user.comments)
+  user: User;
+
+  @ManyToOne(() => Posts, post => post.comments)
+  post: Posts;
+
+  @ManyToOne(() => Forum, forum => forum.comments)
+  forum: Forum;
+
+  @Column()
+  userId: number;
+
+  @Column({ nullable: true })
+  postId: number | null;
+
+  @Column({ nullable: true })
+  forumId: number | null;
 }
