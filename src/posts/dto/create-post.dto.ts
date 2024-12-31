@@ -1,9 +1,6 @@
 import { IsNotEmpty, IsNumber, IsString, IsUrl } from 'class-validator';
 
 export class CreatePostDto {
-  @IsNotEmpty()
-  userId: number;
-
   @IsString()
   caption: string;
 
@@ -13,6 +10,6 @@ export class CreatePostDto {
   @IsNumber()
   dislikes: number = 0;
 
-  @IsUrl({}, { message: 'Invalid media URL' })
-  image: string;
+  @IsString()
+  postPhoto: string;
 }
